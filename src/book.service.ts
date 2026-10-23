@@ -1,32 +1,32 @@
-import { Injectable } from '@nestjs/common';
-import { Book } from './book.interface.js';
-import { NotFoundException } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
+import { Book } from "./book.interface.js";
+import { NotFoundException } from "@nestjs/common";
 @Injectable()
 export class BookService {
   private books: Book[] = [
     {
       id: 1,
-      title: 'Clean Code',
-      author: 'Robert C. Martin',
-      description: 'Sách hướng dẫn viết code sạch',
+      title: "Clean Code",
+      author: "Robert C. Martin",
+      description: "Sách hướng dẫn viết code sạch",
     },
     {
       id: 2,
-      title: 'The Pragmatic Programmer',
-      author: 'Andrew Hunt',
-      description: 'Sách phát triển kỹ năng lập trình',
+      title: "The Pragmatic Programmer",
+      author: "Andrew Hunt",
+      description: "Sách phát triển kỹ năng lập trình",
     },
     {
       id: 3,
-      title: 'Design Patterns',
-      author: 'Erich Gamma',
-      description: 'Sách về các mẫu thiết kế phần mềm',
+      title: "Design Patterns",
+      author: "Erich Gamma",
+      description: "Sách về các mẫu thiết kế phần mềm",
     },
     {
       id: 4,
-      title: 'JavaScript The Good Parts',
-      author: 'Douglas Crockford',
-      description: 'Kiến thức về JavaScript',
+      title: "JavaScript The Good Parts",
+      author: "Douglas Crockford",
+      description: "Kiến thức về JavaScript",
     },
   ];
 
@@ -51,11 +51,11 @@ export class BookService {
     const book = this.books.find((b) => b.id === id);
 
     if (!book) {
-      return 'Not found';
+      return "Not found";
     }
     this.books = this.books.filter((b) => b.id !== id);
     return {
-      message: 'Delete book successfully',
+      message: "Delete book successfully",
     };
   }
 
@@ -69,7 +69,7 @@ export class BookService {
     this.books = this.books.map((p) => (p.id === id ? { ...p, ...book } : p));
 
     return {
-      message: 'Update successfully',
+      message: "Update successfully",
       data: this.books,
     };
   }

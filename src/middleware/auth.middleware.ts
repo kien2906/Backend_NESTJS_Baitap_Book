@@ -5,23 +5,20 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import { BookService } from '../book.service.js';
+interface AuthRequest extends Request {
+  user?: string;
+}
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
-  constructor(private readonly appService: BookService) {}
-  use(req: Request, res: Response, next: NextFunction) {
-    if (!req.headers.authorization) {
-      throw new UnauthorizedException();
+  use(req: AuthRequest, res: Response, next: NextFunction) {
+    const username = req.headers['x-name'];
+
+    if (typeof username !== 'string' || !username.trim()) {
+      throw new UnauthorizedException('User is required');
     }
 
-    const name = req.body.name;
-
-    const books = this.appService.getListId(Number(req.params.id));
-
-    if (books.author !== name) {
-      throw new ForbiddenException('Bạn không phải tác giả');
-    }
+    req.user = username.trim();
     next();
   }
 }

@@ -7,10 +7,11 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { BookService } from './book.service.js';
 import type { Book } from './book.interface.js';
-
+import { AuthorGuard } from './guards/author.guard.js';
 @Controller('books')
 export class BookController {
   constructor(private readonly appService: BookService) {}
@@ -31,11 +32,13 @@ export class BookController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthorGuard)
   deleteBook(@Param('id', ParseIntPipe) id: number) {
     return this.appService.deleteBook(id);
   }
 
   @Put(':id')
+  @UseGuards(AuthorGuard)
   updateBook(@Param('id', ParseIntPipe) id: number, @Body() book: Book) {
     return this.appService.updateBook(id, book);
   }

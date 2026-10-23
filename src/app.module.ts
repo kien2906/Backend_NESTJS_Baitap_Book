@@ -1,10 +1,28 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { BookController } from './book.controller.js';
 import { BookService } from './book.service.js';
-
+import { AuthMiddleware } from './middleware/auth.middleware.js';
+import { AuthorGuard } from './guards/author.guard.js';
 @Module({
-  imports: [],
   controllers: [BookController],
-  providers: [BookService],
+  providers: [BookService,AuthorGuard],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes(
+      {
+        path: 'books/:id',
+        method: RequestMethod.PUT,
+      },
+      {
+        path: 'books/:id',
+        method: RequestMethod.DELETE,
+      },
+    );
+  }
+}
